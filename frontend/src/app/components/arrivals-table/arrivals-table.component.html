@@ -1,3 +1,15 @@
+<div class="demo-button-container">
+    <button mat-raised-button (click)="addData()" class="demo-button">
+      Add data
+    </button>
+    <button
+        mat-raised-button
+        [disabled]="!dataSource.data.length"
+        (click)="removeData()"
+        class="demo-button">
+      Remove data
+    </button>
+  </div>
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
   

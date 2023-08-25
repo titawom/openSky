@@ -6,6 +6,7 @@ import { ArrivalsTableComponent } from './arrivals-table/arrivals-table.componen
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MatSortModule } from '@angular/material/sort';
     FormsModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatButtonModule
   ],
   exports: [
     AirportSelectorComponent,
