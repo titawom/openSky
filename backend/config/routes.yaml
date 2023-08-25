@@ -4,7 +4,7 @@ controllers:
         namespace: App\Controller
     type: attribute
 api_all:
-    path: /api/all
+    path: /api/all/{begin}/{end}
     controller: App\Controller\ApiController::getAllFromExternalApi
 api_arrival:
     path: /api/arrival

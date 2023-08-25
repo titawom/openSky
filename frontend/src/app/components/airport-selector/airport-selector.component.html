@@ -1,0 +1,12 @@
+<div class="container">
+    <h1>Airport Selector</h1>
+    <label for="airport">Select an Airport:</label>
+    <select id="airport" [(ngModel)]="selectedAirport">
+        <option *ngFor="let airport of airports" [value]="airport.code">{{ airport.name }}</option>
+    </select>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" [(ngModel)]="startDate">
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" [(ngModel)]="endDate">
+    <button (click)="search()">Search</button>
+</div>

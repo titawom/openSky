@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ExternalApiService;
 
@@ -18,17 +19,19 @@ class ApiController extends AbstractController
 
     
     /**
-     * @Route("/api/all", name="api_all")
+     * @Route("/api/all/{begin}/{end}", name="api_all")
      */
-    public function getAllFromExternalApi(): JsonResponse
+    public function getAllFromExternalApi(Request $request, $begin, $end): JsonResponse
     {
-        $dataFromApi = $this->externalApiService->fetchData('api/flights/all?begin=1517227200&end=1517230800');
+        // Utiliza $begin y $end en tu lógica
+        $dataFromApi = $this->externalApiService->fetchData("api/flights/all?begin=$begin&end=$end");
         $dataArray = json_decode($dataFromApi, true);
         $arrivalTable = [];
 
         foreach ($dataArray as $itemData) {
-            if (!in_array($itemData["estArrivalAirport"], $arrivalTable))
-            $arrivalTable[] = $itemData["estArrivalAirport"];
+            if (!in_array($itemData["estArrivalAirport"], $arrivalTable)) {
+                $arrivalTable[] = $itemData["estArrivalAirport"];
+            }
         }
 
         return $this->json(['data' => $arrivalTable]);
