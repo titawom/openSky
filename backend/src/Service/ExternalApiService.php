@@ -11,7 +11,7 @@ class ExternalApiService
     public function __construct()
     {
         $this->httpClient = new Client([
-            'base_uri' => 'https://opensky-network.org/', // URL base de la API externa
+            'base_uri' => 'https://opensky-network.org/api', // URL base de la API externa
         ]);
     }
 

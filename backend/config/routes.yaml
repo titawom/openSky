@@ -3,6 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+api_all:
+    path: /api/all
+    controller: App\Controller\ApiController::getAllFromExternalApi
 api_arrival:
     path: /api/arrival
-    controller: App\Controller\ApiController::getDataFromExternalApi
+    controller: App\Controller\ApiController::getArrivalsFromExternalApi

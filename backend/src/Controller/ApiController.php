@@ -16,12 +16,31 @@ class ApiController extends AbstractController
         $this->externalApiService = $externalApiService;
     }
 
+    
+    /**
+     * @Route("/api/all", name="api_all")
+     */
+    public function getAllFromExternalApi(): JsonResponse
+    {
+        $dataFromApi = $this->externalApiService->fetchData('api/flights/all?begin=1517227200&end=1517230800');
+        $dataArray = json_decode($dataFromApi, true);
+        $arrivalTable = [];
+
+        foreach ($dataArray as $itemData) {
+            if (!in_array($itemData["estArrivalAirport"], $arrivalTable))
+            $arrivalTable[] = $itemData["estArrivalAirport"];
+        }
+
+        return $this->json(['data' => $arrivalTable]);
+    }
+   
     /**
      * @Route("/api/arrival", name="api_arrival")
      */
-    public function getDataFromExternalApi(): JsonResponse
+    public function getArrivalsFromExternalApi(): JsonResponse
     {
-        $data = $this->externalApiService->fetchData('/api/flights/arrival?airport=EDDF&begin=1517227200&end=1517230800'); 
+        $data = $this->externalApiService->fetchData('api/flights/arrival?airport=EDDF&begin=1517227200&end=1517230800'); 
         return $this->json(['data' => $data]);
     }
+
 }
