@@ -38,11 +38,11 @@ class ApiController extends AbstractController
     }
    
     /**
-     * @Route("/api/arrival", name="api_arrival")
+     * @Route("/api/arrival/{airport}/{begin}/{end}", name="api_arrival")
      */
-    public function getArrivalsFromExternalApi(): JsonResponse
+    public function getArrivalsFromExternalApi(Request $request, $airport, $begin, $end): JsonResponse
     {
-        $data = $this->externalApiService->fetchData('api/flights/arrival?airport=EDDF&begin=1517227200&end=1517230800'); 
+        $data = $this->externalApiService->fetchData("api/flights/arrival?airport=$airport&begin=$begin&end=$end"); 
         return $this->json(['data' => $data]);
     }
 

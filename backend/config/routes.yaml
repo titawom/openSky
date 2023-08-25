@@ -7,5 +7,5 @@ api_all:
     path: /api/all/{begin}/{end}
     controller: App\Controller\ApiController::getAllFromExternalApi
 api_arrival:
-    path: /api/arrival
+    path: /api/arrival/{airport}/{begin}/{end}
     controller: App\Controller\ApiController::getArrivalsFromExternalApi
