@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { DataService } from 'src/app/service/data.service';
 
 @Component({
     selector: 'app-airport-selector',
@@ -9,41 +11,55 @@ import { HttpClient } from '@angular/common/http';
 export class AirportSelectorComponent {
 
     response: any;
-
-    constructor(private http: HttpClient) {}
-
-    getData() {
-        this.http.get<any>('http://localhost:8000/api/all/1517227200/1517230800').subscribe(
-            (data) => {
-                this.response = data;
-                console.log(data);
-            },
-            (error) => {
-                console.error('Error:', error);
-            }
-        );
-    }
-
-    ngOnInit() {
-        this.getData();
-    }
-
     airports = [
-        { code: 'JFK', name: 'John F. Kennedy Airport (JFK)' },
-        { code: 'LAX', name: 'Los Angeles International Airport (LAX)' }
-        // Add more airports as needed
+        { code: '0', name: 'Select date' },
     ];
 
-    selectedAirport = '';
+    selectedAirport = '0';
     startDate = '';
     endDate = '';
 
-    search() {
-        console.log('Selected Airport:', this.selectedAirport);
-        console.log('Start Date:', this.startDate);
-        console.log('End Date:', this.endDate);
-        // Perform search or other actions with the selected values
+    constructor(private http: HttpClient,
+                private router: Router,
+                private dataService: DataService) {}
+
+    getData() {
+        if (this.startDate != "" && this.endDate != "") {
+            this.http.get<any>('http://localhost:8000/api/all/1517227200/1517230800').subscribe(
+                (data) => {
+                    this.response = data;
+                    this.addDataToSelect();
+                },
+                (error) => {
+                    console.error('Error:', error);
+                }
+            );
+        } else {
+            this.airports = [
+                { code: '0', name: 'Select date' },
+            ];
+        }
     }
 
+    send() {
+        let dataToSend = {
+                airport: this.selectedAirport,
+                startDate: this.startDate,
+                endDate: this.endDate 
+            };
+      
+          this.dataService.setDataToSend(dataToSend);
+      
+          this.router.navigate(['/arrivals']);
+    }
+
+    
+    addDataToSelect() {
+       this.response["data"].forEach((element: any) => {
+        this.airports.push(
+            { code: element, name: element },
+        )
+       });
+    }
     
 }
