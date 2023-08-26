@@ -42,8 +42,9 @@ class ApiController extends AbstractController
      */
     public function getArrivalsFromExternalApi(Request $request, $airport, $begin, $end): JsonResponse
     {
-        $data = $this->externalApiService->fetchData("api/flights/arrival?airport=$airport&begin=$begin&end=$end"); 
-        return $this->json(['data' => $data]);
+        $dataFromApi = $this->externalApiService->fetchData("api/flights/arrival?airport=$airport&begin=$begin&end=$end"); 
+        $dataArray = json_decode($dataFromApi, true);
+        return $this->json(['data' => $dataArray]);
     }
 
 }

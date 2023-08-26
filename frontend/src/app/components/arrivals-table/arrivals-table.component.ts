@@ -6,35 +6,14 @@ import {MatTable, MatTableDataSource} from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+export interface ArrivalData {
+  departureAirport: string;
+  callsign: string;
+  departureAirportHorizDistance: string;
+  departureAirportVertDistance: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
-];
+let ELEMENT_DATA: ArrivalData[] = [];
 
 @Component({
   selector: 'app-arrivals-table',
@@ -44,12 +23,12 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 export class ArrivalsTableComponent {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['departureAirport', 'callsign', 'departureAirportHorizDistance', 'departureAirportVertDistance'];
+  dataSource = new MatTableDataSource<ArrivalData>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<PeriodicElement>;
+  @ViewChild(MatTable) table!: MatTable<ArrivalData>;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -66,24 +45,29 @@ export class ArrivalsTableComponent {
                 this.dataService.dataToSend$.subscribe(data => {
                   this.receivedData = data;
                 });
-                this.showArrivalsTable();
-                
+                this.showArrivalsTable();    
               }
-  
+
   showArrivalsTable() {
-    this.http.get<any>('http://localhost:8000/api/arrival/EDDF/1517227200/1517230800').subscribe(
+    //TODO: remove 
+    this.receivedData["airport"] = "EDDF";
+    this.receivedData["startDate"] = "1517227200";
+    this.receivedData["endDate"] = "1517230800";
+
+    const url = "http://localhost:8000/api/arrival/" + 
+                this.receivedData["airport"] + "/" +
+                this.receivedData["startDate"] + "/" +
+                this.receivedData["endDate"];
+
+    this.http.get<any>(url).subscribe(
                 (data) => {
-                    this.response = data.data;
-                    
+                    this.response = data;
+                    this.initData();
                   },
                   (error) => {
                     console.error('Error:', error);
                   }
                   );  
-
-    console.log(this.receivedData["airport"]);
-    console.log(this.receivedData["startDate"]);
-    console.log(this.receivedData["endDate"]);
   }
 
   announceSortChange(sortState: Sort) {
@@ -94,21 +78,36 @@ export class ArrivalsTableComponent {
     }
   }
 
+  initData() {
+
+    this.response["data"].forEach((element: any) => {
+
+      const newElement: ArrivalData = {
+        departureAirport: element["estDepartureAirport"],
+        callsign: element["callsign"],
+        departureAirportHorizDistance: element["estArrivalAirportHorizDistance"],
+        departureAirportVertDistance: element["estDepartureAirportVertDistance"]
+      };
+      
+      ELEMENT_DATA.push(newElement);
+    });
+    
+    this.dataSource._updateChangeSubscription();
+  }
+
   addData() {
-    const newElement: PeriodicElement = {
-      position: this.dataSource.data.length + 1,
-      name: 'New Element',
-      weight: 0,
-      symbol: 'NE'
+    const newElement: ArrivalData = {
+      departureAirport: '1',
+      callsign: 'New Element',
+      departureAirportHorizDistance: '1',
+      departureAirportVertDistance: 'NE'
     };
 
-    // Agrega un nuevo elemento a la matriz de datos y actualiza la fuente de datos
     this.dataSource.data.push(newElement);
     this.dataSource._updateChangeSubscription();
   }
 
   removeData() {
-    // Elimina el último elemento de la matriz de datos y actualiza la fuente de datos
     this.dataSource.data.pop();
     this.dataSource._updateChangeSubscription();
   }
