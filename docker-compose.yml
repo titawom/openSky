@@ -6,3 +6,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:80"  # Mapeo de puerto del contenedor (80) al host (8080)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"  # Mapeo de puerto del contenedor (80) al host (8080)
