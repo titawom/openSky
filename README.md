@@ -1,6 +1,6 @@
 # openSky
 
-This is an application that uses Docker Compose to run both the backend (Symfony) and frontend (Angular) in separate containers. The application showcases [briefly describe what the application does].
+This is an application that uses Docker Compose to run both the backend (Symfony) and frontend (Angular) in separate containers. 
 
 ## Installation
 
@@ -11,7 +11,7 @@ Follow these steps to install and run the application:
 2. Clone this repository to your local machine:
 
 ```bash
-https://github.com/titawom/openSky.git
+git@github.com:titawom/openSky.git
 ```
 
 3. Navigate to the application directory:
