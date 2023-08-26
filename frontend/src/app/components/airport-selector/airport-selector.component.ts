@@ -75,7 +75,7 @@ export class AirportSelectorComponent {
         unixTimeStartDate = 1517227200;
         unixTimeEndDate = 1517230800;
         
-        return "http://localhost:8000/api/all/" + 
+        return "api/all/" + 
                     unixTimeStartDate + "/" +
                     unixTimeEndDate;
     }
