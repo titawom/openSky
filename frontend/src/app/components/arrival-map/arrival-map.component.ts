@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import { DataService } from 'src/app/service/data.service';
 
 @Component({
   selector: 'app-arrival-map',
@@ -7,30 +8,38 @@ import * as L from 'leaflet';
   styleUrls: ['./arrival-map.component.css']
 })
 export class ArrivalMapComponent implements OnInit {
+
+  receivedData: any;
+  airport!: string;
+
+  constructor (private dataService: DataService) {
+    this.dataService.dataToSend$.subscribe((data: any) => {
+      this.receivedData = data;
+      this.airport = this.receivedData["data"][0]["estArrivalAirport"];
+    });
+  }
   ngOnInit() {
-    const map = L.map('map').setView([37.7749, -122.4194], 10); // Coordenadas de San Francisco
+    const map = L.map('map').setView([37.7749, -122.4194], 1); 
 
-    // Agrega una capa de teselas
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© Contribuyentes de OpenStreetMap'
     }).addTo(map);
 
-    // Coordenadas de los aeropuertos
-    const arrivalAirportCoords: L.LatLngExpression = [45.7128, -74.0060]; // Nueva York
-    const departureAirportCoords: L.LatLngExpression = [34.0522, -118.2437]; // Los Ángeles
+    this.receivedData["data"].forEach((element: any) => {
 
-    // Agrega marcadores para los aeropuertos de llegada y partida
-    const arrivalMarker = L.marker(arrivalAirportCoords, {
-      icon: L.icon({
-        iconUrl: 'assets/marker-icon.png',
-        shadowUrl: 'assets/marker-shadow.png' 
-      })
-    }).addTo(map);
-    const departureMarker = L.marker(departureAirportCoords, {
-      icon: L.icon({
-        iconUrl: 'assets/marker-icon.png',
-        shadowUrl: 'assets/marker-shadow.png' 
-      })
-    }).addTo(map);
+      if (element["estDepartureAirportHorizDistance"] != null &&
+          element["estDepartureAirportVertDistance"] != null) {
+            const departureAirportCoords: L.LatLngExpression = [
+              element["estDepartureAirportHorizDistance"],
+              element["estDepartureAirportVertDistance"]
+             ]; 
+     
+           const arrivalMarker = L.marker(departureAirportCoords, {
+             icon: L.icon({
+               iconUrl: 'assets/marker-icon.png',
+               shadowUrl: 'assets/marker-shadow.png' 
+             })
+           }).addTo(map);
+      }
+    });
   }
 }

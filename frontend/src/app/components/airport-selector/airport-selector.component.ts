@@ -67,7 +67,6 @@ export class AirportSelectorComponent {
         const dateStartDate = new Date(this.startDate);
         const dateEndDate = new Date(this.endDate);
         
-        // Convierte la fecha a Unix time (segundos desde la época)
         let unixTimeStartDate = Math.floor(dateStartDate.getTime() / 1000);
         let unixTimeEndDate = Math.floor(dateEndDate.getTime() / 1000);
         

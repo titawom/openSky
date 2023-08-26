@@ -11,4 +11,4 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "4200:4200"  # Mapeo de puerto del contenedor (80) al host (8080)
+      - "4200:4200"  # Mapeo de puerto del contenedor (4200) al host (4200)

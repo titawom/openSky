@@ -5,6 +5,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 
 export interface ArrivalData {
   departureAirport: string;
@@ -40,7 +41,8 @@ export class ArrivalsTableComponent {
 
   constructor(private dataService: DataService,
               private http: HttpClient,
-              private _liveAnnouncer: LiveAnnouncer) {
+              private _liveAnnouncer: LiveAnnouncer,
+              private router: Router) {
                 
                 this.dataService.dataToSend$.subscribe(data => {
                   this.receivedData = data;
@@ -112,4 +114,8 @@ export class ArrivalsTableComponent {
     this.dataSource._updateChangeSubscription();
   }
   
+  send() {
+      this.dataService.setDataToSend(this.response);
+      this.router.navigate(['/map']);
+}
 }

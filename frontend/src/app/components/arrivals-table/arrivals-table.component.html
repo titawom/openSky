@@ -13,25 +13,21 @@
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
   
-      <!-- Position Column -->
       <ng-container matColumnDef="departureAirport">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> departureAirport </th>
         <td mat-cell *matCellDef="let element"> {{element.departureAirport}} </td>
       </ng-container>
-  
-      <!-- Name Column -->
+
       <ng-container matColumnDef="callsign">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> callsign </th>
         <td mat-cell *matCellDef="let element"> {{element.callsign}} </td>
       </ng-container>
-  
-      <!-- Weight Column -->
+
       <ng-container matColumnDef="departureAirportHorizDistance">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight"> departureAirportHorizDistance </th>
         <td mat-cell *matCellDef="let element"> {{element.departureAirportHorizDistance}} </td>
       </ng-container>
-  
-      <!-- Symbol Column -->
+
       <ng-container matColumnDef="departureAirportVertDistance">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol"> departureAirportVertDistance </th>
         <td mat-cell *matCellDef="let element"> {{element.departureAirportVertDistance}} </td>
@@ -46,3 +42,9 @@
                    aria-label="Select page of periodic elements">
     </mat-paginator>
   </div>
+
+  <button mat-raised-button (click)="send()" class="demo-button map-button">
+    Go to Map
+  </button>
+
+
