@@ -7,11 +7,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { ArrivalMapComponent } from './arrival-map/arrival-map.component';
 
 @NgModule({
   declarations: [
     AirportSelectorComponent,
-    ArrivalsTableComponent
+    ArrivalsTableComponent,
+    ArrivalMapComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   exports: [
     AirportSelectorComponent,
-    ArrivalsTableComponent
+    ArrivalsTableComponent,
+    ArrivalMapComponent
   ]
 })
 export class ComponentsModule { }
