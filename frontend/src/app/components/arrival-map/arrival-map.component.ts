@@ -51,7 +51,7 @@ export class ArrivalMapComponent implements OnInit {
   }
 
   addViewpointToMap () {
-    console.log(this.response);
+
     if (this.response != null) {
       this.response.forEach((element: any) => {
         if (element[1] != null &&
