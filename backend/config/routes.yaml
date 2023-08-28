@@ -9,3 +9,6 @@ api_all:
 api_arrival:
     path: /api/arrival/{airport}/{begin}/{end}
     controller: App\Controller\ApiController::getArrivalsFromExternalApi
+api_tracks:
+    path: /api/tracks/{icao24}/{time}
+    controller: App\Controller\ApiController::getTracksFromIcao24

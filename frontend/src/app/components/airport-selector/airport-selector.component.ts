@@ -15,9 +15,9 @@ export class AirportSelectorComponent {
         { code: '0', name: 'Select date' },
     ];
 
-    selectedAirport = '0';
-    startDate = '1517227200';
-    endDate = '1517230800';
+    selectedAirport: string = '0';
+    startDate: string = "2018-01-29";
+    endDate: string = "2018-01-29";
 
     constructor(private http: HttpClient,
                 private router: Router,
@@ -43,10 +43,16 @@ export class AirportSelectorComponent {
     }
 
     send() {
+        const dateStartDate = new Date(this.startDate);
+        const dateEndDate = new Date(this.endDate);
+
+        let unixTimeStartDate = Math.floor(dateStartDate.getTime() / 1000);
+        let unixTimeEndDate = Math.floor(dateEndDate.getTime() / 1000);
+
         let dataToSend = {
                 airport: this.selectedAirport,
-                startDate: this.startDate,
-                endDate: this.endDate 
+                startDate: unixTimeStartDate,
+                endDate: unixTimeEndDate 
             };
       
           this.dataService.setDataToSend(dataToSend);
@@ -70,10 +76,10 @@ export class AirportSelectorComponent {
         let unixTimeStartDate = Math.floor(dateStartDate.getTime() / 1000);
         let unixTimeEndDate = Math.floor(dateEndDate.getTime() / 1000);
         
-        //TODO: remove 
-        unixTimeStartDate = 1517227200;
-        unixTimeEndDate = 1517230800;
-        
+         //TODO: remove 
+         unixTimeStartDate = 1517227200;
+         unixTimeEndDate = 1517230800;
+
         return "http://localhost:8000/api/all/" + 
                     unixTimeStartDate + "/" +
                     unixTimeEndDate;

@@ -47,4 +47,14 @@ class ApiController extends AbstractController
         return $this->json(['data' => $dataArray]);
     }
 
+        /**
+     * @Route("/api/tracks/{icao24}/{time}", name="api_tracks")
+     */
+    public function getTracksFromIcao24(Request $request, $icao24, $time): JsonResponse
+    {
+        $dataFromApi = $this->externalApiService->fetchData("api/tracks/all?icao24=$icao24&time=$time"); 
+        $dataArray = json_decode($dataFromApi, true);
+        return $this->json(['data' => $dataArray]);
+    }
+
 }
